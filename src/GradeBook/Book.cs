@@ -5,12 +5,29 @@ namespace GradeBook
 {
     // The convention in C# is to pass these 2 params, sender and args when creating a delegate that's going to be used to create an Event
     public delegate void GradedAddedDelegate(object sender, EventArgs args);
-    public class Book
+
+
+    public class NamedObject
+    {
+        public NamedObject(string name)
+        {
+            Name = name;
+        }
+
+        public string Name
+        {
+            get;
+            set;
+        }
+    }
+
+    // here, Book inherits from NamedObject so Book *is* a NamedObject
+    public class Book : NamedObject
     {
         // This is a constructor. It doesn't have a return type, and must have the same name as the class it's in. It's going to be initialised before
         // any method call
 
-        public Book(string name)
+        public Book(string name) : base(name)
         {
             Name = name;
             grades = new List<double>();
@@ -97,13 +114,7 @@ namespace GradeBook
 
         private List<double> grades;
 
-        public string Name
-        {
-            get;
-            set;
-        }
-
         public const string CATEGORY = "Science";
-        private string name;
+
     }
 }
