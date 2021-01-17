@@ -3,6 +3,8 @@ using System;
 
 namespace GradeBook
 {
+    // The convention in C# is to pass these 2 params, sender and args when creating a delegate that's going to be used to create an Event
+    public delegate void GradedAddedDelegate(object sender, EventArgs args);
     public class Book
     {
         // This is a constructor. It doesn't have a return type, and must have the same name as the class it's in. It's going to be initialised before
@@ -18,6 +20,14 @@ namespace GradeBook
             if (grade <= 100 && grade >= 0)
             {
                 grades.Add(grade);
+
+                // this checks that we have at least one method added to the GradeAdded delegat
+                // if there aren't any methods attatched to it there's no point in dispatching
+                // an event
+                if (GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else
             {
@@ -43,6 +53,11 @@ namespace GradeBook
                     break;
             }
         }
+
+        // the event keyword adds some restrictions and some functionality to the delegate
+        // this GradeAdded delagate can be used by member in the application to fire an event
+        public event GradedAddedDelegate GradeAdded;
+
         public Statistics GetStatistics()
         {
             var result = new Statistics();

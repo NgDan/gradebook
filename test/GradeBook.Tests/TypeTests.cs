@@ -9,6 +9,7 @@ namespace GradeBook.Tests
     public delegate string WriteLogDelegate(string logMessage);
     public class TypeTests
     {
+        int count = 0;
         [Fact]
         public void WriteLogDelegateCanPointToMethod()
         {
@@ -22,13 +23,41 @@ namespace GradeBook.Tests
 
             WriteLogDelegate log = ReturnMessage;
 
+            // the line above initialised log as WriteLogDelegate type and it
+            // assigned log the ReturnMessage method.
+            // The lines below will add ReturnMessage again to the delagate and
+            // will also add IncrementCount.
+            // then, log will call all the methods added to it, even if they are added tiwce
+            // like ReturnMessage. To test this we created a global count variable to verify
+            // that ReturnMessage has called it twice and IncrementCount once, even though 
+            // we've only called log("Hello!") once
+            // This is called a multi-cast delagate.
+            log += ReturnMessage;
+            log += IncrementCount;
+
             var result = log("Hello!");
 
-            Assert.Equal("Hello!", result);
+            // Assert.Equal("Hello!", result);
+            Assert.Equal(3, count);
         }
 
+        // this method is going to be passed to the delegate.
+        // it's signature must match the signature of the delegate.
+        // that means, in this case it needs to take an argument of 
+        // type string and return an argument of type string
+        string IncrementCount(string message)
+        {
+            count++;
+            return message.ToLower();
+        }
+
+        // this method is going to be passed to the delegate.
+        // it's signature must match the signature of the delegate.
+        // that means, in this case it needs to take an argument of 
+        // type string and return an argument of type string
         string ReturnMessage(string message)
         {
+            count++;
             return message;
         }
         [Fact]

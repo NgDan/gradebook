@@ -8,6 +8,8 @@ namespace GradeBook
         static void Main(string[] args)
         {
             var book = new Book("Dan's GradeBook");
+            // usually we handle the delegates right after creating an instance of the parent class
+            book.GradeAdded += OnGradeAdded;
 
             // book.AddGrade(89.1);
             // book.AddGrade(90.5);
@@ -50,6 +52,10 @@ namespace GradeBook
             System.Console.WriteLine($"The highest grade is {stats.High:N1}");
             System.Console.WriteLine($"The average grade is {stats.Average:N1}");
             System.Console.WriteLine($"The letter grade is {stats.Letter}");
+        }
+        static void OnGradeAdded(object sender, EventArgs e)
+        {
+            System.Console.WriteLine("A grade was added!");
         }
     }
 }
