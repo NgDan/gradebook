@@ -3,10 +3,34 @@ using Xunit;
 
 namespace GradeBook.Tests
 {
+
+
+    // Here we define the signature of the delegate
+    public delegate string WriteLogDelegate(string logMessage);
     public class TypeTests
     {
+        [Fact]
+        public void WriteLogDelegateCanPointToMethod()
+        {
+            // here we create a new var for our delagate using the type we've defined earlier
+            // then, we create a new instance of WriteLogDelegate, passing the method we're interested in
 
+            // this is the longer notation
+            // WriteLogDelegate log;
+            // log = new WriteLogDelegate(ReturnMessage);
+            // but we can shorten it like this:
 
+            WriteLogDelegate log = ReturnMessage;
+
+            var result = log("Hello!");
+
+            Assert.Equal("Hello!", result);
+        }
+
+        string ReturnMessage(string message)
+        {
+            return message;
+        }
         [Fact]
         public void StringsBehaveLikeValueTypes()
         {
