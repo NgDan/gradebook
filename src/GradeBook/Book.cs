@@ -7,6 +7,36 @@ namespace GradeBook
     public delegate void GradedAddedDelegate(object sender, EventArgs args);
 
 
+    // Interfaces are far more common than abstract classes.
+    // Interfaces are another way of achieving encapsulation and polymorphism but unlike abstract classes they
+    // don't provide any implementation details. Abstract classes can provide implementation details if they 
+    // want to
+    public interface IBook
+    {
+        // we're not using the public keyword here because we want all objects that implement this
+        // interface to have these members
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        string Name { get; }
+        event GradedAddedDelegate GradeAdded;
+    }
+    public abstract class Book : NamedObject, IBook
+    {
+        protected Book(string name) : base(name)
+        {
+        }
+
+        public virtual event GradedAddedDelegate GradeAdded;
+
+        public abstract void AddGrade(double grade);
+
+        public virtual Statistics GetStatistics()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     public class NamedObject
     {
         public NamedObject(string name)
@@ -22,17 +52,21 @@ namespace GradeBook
     }
 
     // here, Book inherits from NamedObject so Book *is* a NamedObject
-    public class Book : NamedObject
+    public class InMemoryBook : Book
     {
         // This is a constructor. It doesn't have a return type, and must have the same name as the class it's in. It's going to be initialised before
         // any method call
 
-        public Book(string name) : base(name)
+        public InMemoryBook(string name) : base(name)
         {
             Name = name;
             grades = new List<double>();
         }
-        public void AddGrade(double grade)
+
+        // The override keyworkd means this method will override the method inherited.
+        // You can only override abstract methods and "virtual methods" that use the
+        // "virtual" keyword
+        public override void AddGrade(double grade)
         {
             if (grade <= 100 && grade >= 0)
             {
@@ -73,9 +107,9 @@ namespace GradeBook
 
         // the event keyword adds some restrictions and some functionality to the delegate
         // this GradeAdded delagate can be used by member in the application to fire an event
-        public event GradedAddedDelegate GradeAdded;
+        public override event GradedAddedDelegate GradeAdded;
 
-        public Statistics GetStatistics()
+        public override Statistics GetStatistics()
         {
             var result = new Statistics();
             result.High = double.MinValue;

@@ -121,9 +121,9 @@ namespace GradeBook.Tests
             Assert.Equal(book1.Name, "New Name");
         }
 
-        private void GetBookSetName(ref Book book, string name)
+        private void GetBookSetName(ref InMemoryBook book, string name)
         {
-            book = new Book(name);
+            book = new InMemoryBook(name);
             // book.Name = name;
         }
 
@@ -140,12 +140,12 @@ namespace GradeBook.Tests
             Assert.Equal(book1.Name, "Book 1");
         }
 
-        private void GetBookSetName(Book book, string name)
+        private void GetBookSetName(InMemoryBook book, string name)
         {
             // Here, book is a new value that is created, because *by default C# always passes parameters by value*.
             // This value is assigned a reference because book1 is a reference type, but when we do book = new Book(name), we're overriding
             // the value of that variable with a new Book reference so the reference passed as a parameter is lost.
-            book = new Book(name);
+            book = new InMemoryBook(name);
             book.Name = name;
         }
 
@@ -160,7 +160,7 @@ namespace GradeBook.Tests
             Assert.Equal(book1.Name, "New Name");
         }
 
-        private void SetName(Book book, string name)
+        private void SetName(InMemoryBook book, string name)
         {
             // Here, book is also a new value which holds the reference to book1, because we're passing a reference type.
             // We can access that reference and modify it's properties and call it's methods but if we override book, it's not going
@@ -196,9 +196,9 @@ namespace GradeBook.Tests
 
         }
 
-        Book GetBook(string name)
+        InMemoryBook GetBook(string name)
         {
-            return new Book(name);
+            return new InMemoryBook(name);
         }
     }
 }

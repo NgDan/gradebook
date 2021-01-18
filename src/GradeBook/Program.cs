@@ -7,7 +7,7 @@ namespace GradeBook
     {
         static void Main(string[] args)
         {
-            var book = new Book("Dan's GradeBook");
+            var book = new InMemoryBook("Dan's GradeBook");
             // usually we handle the delegates right after creating an instance of the parent class
             book.GradeAdded += OnGradeAdded;
 
@@ -15,6 +15,21 @@ namespace GradeBook
             // book.AddGrade(90.5);
             // book.AddGrade(77.5);
 
+            EnterGrades(book);
+
+            var stats = book.GetStatistics();
+            // book.Name = "";
+
+            System.Console.WriteLine(InMemoryBook.CATEGORY);
+            System.Console.WriteLine($"For the book named {book.Name}");
+            System.Console.WriteLine($"The lowest grade is {stats.Low:N1}");
+            System.Console.WriteLine($"The highest grade is {stats.High:N1}");
+            System.Console.WriteLine($"The average grade is {stats.Average:N1}");
+            System.Console.WriteLine($"The letter grade is {stats.Letter}");
+        }
+
+        private static void EnterGrades(IBook book)
+        {
             while (true)
             {
                 System.Console.WriteLine("Enter a grade or 'q' to quit");
@@ -42,17 +57,8 @@ namespace GradeBook
                     System.Console.WriteLine("**");
                 }
             }
-
-            var stats = book.GetStatistics();
-            // book.Name = "";
-
-            System.Console.WriteLine(Book.CATEGORY);
-            System.Console.WriteLine($"For the book named {book.Name}");
-            System.Console.WriteLine($"The lowest grade is {stats.Low:N1}");
-            System.Console.WriteLine($"The highest grade is {stats.High:N1}");
-            System.Console.WriteLine($"The average grade is {stats.Average:N1}");
-            System.Console.WriteLine($"The letter grade is {stats.Letter}");
         }
+
         static void OnGradeAdded(object sender, EventArgs e)
         {
             System.Console.WriteLine("A grade was added!");
